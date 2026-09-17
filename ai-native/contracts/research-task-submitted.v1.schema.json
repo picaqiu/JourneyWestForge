@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://journeywestforge.dev/contracts/research-task-submitted.v1.schema.json",
+  "title": "ResearchTaskSubmittedEventV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "occurred_at",
+    "trace_id",
+    "tenant_id",
+    "task_id",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "const": "research.task.submitted"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+    },
+    "task_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["query", "requested_by", "idempotency_key"],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "requested_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+name: ai-native-python
+
+on:
+  push:
+    paths:
+      - "ai-native/python-agent-runtime/**"
+      - "ai-native/contracts/**"
+      - ".github/workflows/ai-native-python.yml"
+  pull_request:
+    paths:
+      - "ai-native/python-agent-runtime/**"
+      - "ai-native/contracts/**"
+      - ".github/workflows/ai-native-python.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: ai-native/python-agent-runtime/pyproject.toml
+      - name: Install runtime
+        run: python -m pip install -e ai-native/python-agent-runtime
+      - name: Run tests
+        working-directory: ai-native/python-agent-runtime
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
